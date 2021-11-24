@@ -1,0 +1,11 @@
+name: alcocalc
+
+environment:
+  sdk: '>=2.13.0 <3.0.0'
+
+dependencies:
+  brain_dart:
+    path: ../brain_dart
+
+dev_dependencies:
+  test:
