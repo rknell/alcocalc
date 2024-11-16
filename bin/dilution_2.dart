@@ -3,10 +3,10 @@ import 'package:alcocalc/tables/oiml.dart';
 
 const tare = 0;
 
-const double startingWeight = 26.14;
+const double startingWeight = 29.04;
 const startingABV = 0.962;
 const double startingTemperature = 20;
-const targetABV = .37;
+const targetABV = .40;
 
 //4.087 starting weight
 //70% abv

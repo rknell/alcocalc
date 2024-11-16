@@ -3,11 +3,8 @@ import 'package:alcocalc/tables/oiml.dart';
 
 const tare = 0;
 
-const double startingWeight = 26.14;
-const startingABV = 0.962;
-const double startingTemperature = 20;
-const targetABV = .37;
-
+const input = '0.875961669	37.0936';
+const double targetABV = 0.55;
 //4.087 starting weight
 //70% abv
 // sugar @ 1.6 5.383
@@ -22,6 +19,10 @@ const targetABV = .37;
 //78.23 final prediction
 
 main() {
+  final startingABV = double.parse(input.split('	')[0]);
+  final double startingTemperature = 20;
+  final startingWeight = double.parse(input.split('	')[1]);
+
   final alcocalc = AlcocalcFunctions();
   final startingDensity = OIMLTables.tableII(startingABV, startingTemperature);
   final startingVolume = (startingWeight - tare) / (startingDensity / 1000);

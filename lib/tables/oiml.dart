@@ -1,5 +1,9 @@
 import 'dart:math' as math;
 
+import '../helpers.dart';
+
+export '../helpers.dart';
+
 const alpha = 25E-6;
 
 class OIMLTables {
@@ -160,6 +164,9 @@ class OIMLTables {
   //   """
   // p_q
   static double tableIVb(double q) {
+    if (q > 1) {
+      throw MustBeDecimalPercentageException();
+    }
     return findRoot((x) => tableIIIb(x) - q, 0, 1, precision: 0.000000000001);
   }
 
@@ -412,51 +419,4 @@ class OIMLTables {
   }
 }
 
-double findRoot(
-  Function(double x) func,
-  double lowBracket,
-  double highBracket, {
-  int iterations = 0,
-  int maxIterations = 50,
-  bool isInverse = false,
-  double precision = 0.00001,
-}) {
-  //Determine direction
-  if (iterations == 0) {
-    final guessOneThird =
-        func(highBracket - ((highBracket - lowBracket).abs() * 0.3));
-    final guessTwoThird =
-        func(highBracket - ((highBracket - lowBracket).abs() * 0.6));
-    isInverse = guessOneThird < guessTwoThird;
-  }
-
-  final guess = highBracket - ((highBracket - lowBracket).abs() / 2);
-  final result = func(guess);
-  // print("$guess - $result");
-  if (iterations == maxIterations) {
-    throw "Did not converge";
-  } else if (result <= precision && result > precision * -1) {
-    return guess;
-  } else if ((isInverse == true && result < 0) ||
-      (isInverse == false && result > 0)) {
-    return findRoot(
-      func,
-      lowBracket,
-      guess,
-      iterations: iterations + 1,
-      maxIterations: maxIterations,
-      isInverse: isInverse,
-      precision: precision,
-    );
-  } else {
-    return findRoot(
-      func,
-      guess,
-      highBracket,
-      iterations: iterations + 1,
-      maxIterations: maxIterations,
-      isInverse: isInverse,
-      precision: precision,
-    );
-  }
-}
+class MustBeDecimalPercentageException implements Exception {}

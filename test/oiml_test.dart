@@ -1,15 +1,6 @@
 import 'package:alcocalc/tables/oiml.dart';
 import 'package:test/test.dart';
 
-extension RoundDouble on double {
-  double roundTo2Places() {
-    return double.parse(this.toStringAsFixed(2));
-  }
-
-  double roundToXPlaces(int places) {
-    return double.parse(this.toStringAsFixed(places));
-  }
-}
 
 main() {
   //   Table I gives the density of a mixture as a function of the temperature in °C, from — 20 °C to + 40 °C, and of the
@@ -35,7 +26,7 @@ main() {
 
   //   Table IIIa gives the density at 20 °C as a function of the alcoholic strength by mass varying between 0 % and
   //   100 %.
-  // ABW @ 20d > Density
+  // ABW > Density
   test('table IIIa', () {
     expect(OIMLTables.tableIIIa(.2).roundTo2Places(), 968.61);
     expect(OIMLTables.tableIIIa(.5).roundTo2Places(), 913.77);
