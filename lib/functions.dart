@@ -32,7 +32,7 @@ class AlcocalcFunctions {
         targetWeight: targetWeight,
         additionalWeight: additionalWeight,
         totalWeightOfAlcohol: totalWeightOfAlcohol,
-        targetVolume: targetVolume);
+        targetVolume: targetVolume, targetABV: targetABV);
   }
 
   double correctedABV(double percentABV, double temperature) =>
@@ -46,12 +46,15 @@ class DilutionResult {
   final double additionalWeight;
   final double totalWeightOfAlcohol;
   final double targetVolume;
+  double get acceptableABVHigh => double.parse((targetABV * 1.005).toStringAsFixed(4));
+  double get acceptableABVLow => double.parse((targetABV * .998).toStringAsFixed(4));
+  final double targetABV;
 
   DilutionResult(
       {required this.targetWeight,
       required this.additionalWeight,
       required this.totalWeightOfAlcohol,
-      required this.targetVolume});
+      required this.targetVolume, required this.targetABV});
 
   @override
   String toString() => """
@@ -60,5 +63,6 @@ class DilutionResult {
   Total weight of alcohol: ${totalWeightOfAlcohol}
   Total Target Volume: $targetVolume
   Total Target Bottles: ${targetVolume / .7}
+  Target ABV range: $acceptableABVLow - $acceptableABVHigh
   """;
 }
