@@ -1,5 +1,4 @@
 import 'package:alcocalc/functions.dart';
-import 'package:alcocalc/tables/oiml.dart';
 
 const double startingABV = 0.6752;
 const double startingTemperature = 20;
