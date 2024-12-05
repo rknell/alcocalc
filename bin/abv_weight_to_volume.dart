@@ -1,7 +1,7 @@
 import 'package:alcocalc/tables/oiml.dart';
 
-const ABV = 0.962;
-const weight = 26.16;
+const ABV = 0.744;
+const weight = 39.44;
 
 //9.94
 
