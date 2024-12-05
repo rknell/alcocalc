@@ -15,7 +15,7 @@ class AlcocalcFunctions {
 
     final targetABW = OIMLTables.tableIVb(targetABV);
 
-    var densityOfAlcohol = OIMLTables.tableIIIa(1.0)/1000;
+    // var densityOfAlcohol = OIMLTables.tableIIIa(1.0)/1000;
     // final LALs = totalWeightOfAlcohol / densityOfAlcohol;
     final startingVolume = startingWeight / (OIMLTables.tableII(startingABV, 20) /1000);
     final multiplier = startingABW / targetABW;
