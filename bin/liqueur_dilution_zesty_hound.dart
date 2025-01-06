@@ -3,20 +3,13 @@ import 'package:alcocalc/tables/brix.dart';
 
 const tare = 0;
 
-const double startingABV = 0.8066;
-const double startingTemperature = 20;
-const double startingWeight = 33.62;
-
-
+const double startingABV = 0.7416;
+const double startingTemperature = 25.7;
+const double startingWeight = 23.94;
 
 final sugars = <Sugars>[
-  Sugars(
-      name:
-          'Sugar Syrup (Sunsweet)',
-      specificGravity: Brix.brixToDensity(70),
-      percentage: .04),
+  Sugars(name: 'Sugar Syrup', specificGravity: Brix.brixToDensity(70), percentage: .0064),
 ];
-
 
 void main() {
   liqueurDilution(
@@ -24,5 +17,5 @@ void main() {
       startingABV: startingABV,
       startingTemperature: startingTemperature,
       sugars: sugars,
-      targetABV: .4);
+      targetABV: .37);
 }

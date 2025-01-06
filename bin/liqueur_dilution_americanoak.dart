@@ -1,7 +1,7 @@
 import 'package:alcocalc/functions.dart';
 
-const double startingWeight = 40.48;
-const startingABV = 0.6778;
+const double startingWeight = 41.04;
+const startingABV = 0.7699;
 const double startingTemperature = 20;
 
 final sugars = <Sugars>[

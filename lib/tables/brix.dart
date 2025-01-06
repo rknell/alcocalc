@@ -16,5 +16,5 @@ class Brix {
       (C1 * math.pow(sg, 3)) - (C2 * math.pow(sg, 2)) + (sg * C3) - C4;
 
   static double brixToDensity(double brix) =>
-      findRoot((x) => densityToBrix(x) - brix, -10, 10);
+      findRoot((x) => densityToBrix(x) - brix, -2, 2);
 }
