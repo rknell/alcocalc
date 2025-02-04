@@ -1,9 +1,15 @@
 name: alcocalc
+description: A Dart library for precise alcohol dilution calculations, specifically designed for distillers and liqueur makers.
+version: 1.0.0
+publish_to: none
+homepage: https://bitbucket.org/rebellion-rum/alcocalc
 
 environment:
   sdk: '>=2.13.0 <3.0.0'
 
 dependencies:
+  meta: ^1.9.0
 
 dev_dependencies:
-  test:
+  test: ^1.24.0
+  lints: ^2.1.0

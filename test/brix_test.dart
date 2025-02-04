@@ -1,7 +1,6 @@
+import 'package:alcocalc/helpers.dart';
 import 'package:alcocalc/tables/brix.dart';
 import 'package:test/test.dart';
-
-import '../lib/helpers.dart';
 
 main() {
   test('it should calculate brix', () {

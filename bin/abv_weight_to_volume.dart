@@ -12,5 +12,5 @@ main() {
   print("LALs: ${volume * ABV}");
 
   print("Bottles: ${(volume / 700).floor()}");
-  print("Bottles @ 40%: ${(volume * (ABV / .4) / 700)}");
+  print("Bottles @ 40%: ${volume * (ABV / .4) / 700}");
 }

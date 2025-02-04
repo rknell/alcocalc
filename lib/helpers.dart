@@ -7,7 +7,7 @@ double findRoot(
   bool isInverse = false,
   double precision = 0.00001,
 }) {
-  //Determine direction
+  // Determine direction on first iteration only
   if (iterations == 0) {
     final guessOneThird =
         func(highBracket - ((highBracket - lowBracket).abs() * 0.3));
@@ -16,15 +16,19 @@ double findRoot(
     isInverse = guessOneThird < guessTwoThird;
   }
 
-  final guess = highBracket - ((highBracket - lowBracket).abs() / 2);
+  // Calculate midpoint
+  final guess = lowBracket + ((highBracket - lowBracket) / 2);
   final result = func(guess);
-  // print("$guess - $result");
+
+  // Check for convergence or max iterations
   if (iterations == maxIterations) {
     throw "Did not converge";
-  } else if (result <= precision && result > precision * -1) {
+  } else if (result.abs() <= precision) {
     return guess;
-  } else if ((isInverse == true && result < 0) ||
-      (isInverse == false && result > 0)) {
+  }
+
+  // Determine which half to recurse on based on result and isInverse
+  if ((isInverse && result < 0) || (!isInverse && result > 0)) {
     return findRoot(
       func,
       lowBracket,
@@ -49,10 +53,10 @@ double findRoot(
 
 extension RoundDouble on double {
   double roundTo2Places() {
-    return double.parse(this.toStringAsFixed(2));
+    return double.parse(toStringAsFixed(2));
   }
 
   double roundToXPlaces(int places) {
-    return double.parse(this.toStringAsFixed(places));
+    return double.parse(toStringAsFixed(places));
   }
 }

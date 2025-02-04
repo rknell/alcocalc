@@ -8,14 +8,19 @@ const double startingTemperature = 25.7;
 const double startingWeight = 23.94;
 
 final sugars = <Sugars>[
-  Sugars(name: 'Sugar Syrup', specificGravity: Brix.brixToDensity(70), percentage: .0064),
+  Sugars(
+      name: 'Sugar Syrup',
+      specificGravity: Brix.brixToDensity(70),
+      percentage: .0064),
 ];
 
 void main() {
-  liqueurDilution(
+  final result = dilution(
       startingWeight: startingWeight,
       startingABV: startingABV,
       startingTemperature: startingTemperature,
       sugars: sugars,
       targetABV: .37);
+
+  print(result);
 }

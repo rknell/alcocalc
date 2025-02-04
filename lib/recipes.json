@@ -1,0 +1,140 @@
+{
+  "recipes": [
+    {
+      "name": "Zesty Hound",
+      "startingABV": 0.7416,
+      "startingTemperature": 25.7,
+      "startingWeight": 23.94,
+      "targetABV": 0.37,
+      "sugars": [
+        {
+          "name": "Sugar Syrup",
+          "specificGravity": 1.3509,
+          "percentage": 0.0064
+        }
+      ]
+    },
+    {
+      "name": "American Oak",
+      "startingABV": 0.7699,
+      "startingTemperature": 20.0,
+      "startingWeight": 41.04,
+      "targetABV": 0.37,
+      "sugars": [
+        {
+          "name": "Honey",
+          "specificGravity": 1.43,
+          "percentage": 0.017
+        },
+        {
+          "name": "Sugar Syrup",
+          "specificGravity": 1.3636,
+          "percentage": 0.025
+        }
+      ]
+    },
+    {
+      "name": "Cloak & Dagger",
+      "startingABV": 0.6276,
+      "startingTemperature": 20.0,
+      "startingWeight": 25.62,
+      "targetABV": 0.37,
+      "sugars": [
+        {
+          "name": "Sugar",
+          "specificGravity": 1.3553,
+          "percentage": 0.02
+        }
+      ]
+    },
+    {
+      "name": "Limoncello",
+      "startingABV": 0.962,
+      "startingTemperature": 20.0,
+      "startingWeight": 0.5236,
+      "targetABV": 0.3,
+      "sugars": [
+        {
+          "name": "2to1 Simple Sugar",
+          "specificGravity": 1.61182,
+          "percentage": 0.29
+        }
+      ]
+    },
+    {
+      "name": "New Blue Gin",
+      "startingABV": 0.4221,
+      "startingTemperature": 20.0,
+      "startingWeight": 47.14,
+      "targetABV": 0.37,
+      "sugars": [
+        {
+          "name": "Sugar Syrup",
+          "specificGravity": 1.3553,
+          "percentage": 0.12
+        }
+      ]
+    },
+    {
+      "name": "Traditional",
+      "startingABV": 0.6752,
+      "startingTemperature": 20.0,
+      "startingWeight": 41.06,
+      "targetABV": 0.37,
+      "sugars": [
+        {
+          "name": "Sugar Syrup",
+          "specificGravity": 1.51257,
+          "percentage": 0.01
+        }
+      ]
+    },
+    {
+      "name": "Vodka Inferno",
+      "startingABV": 0.9519,
+      "startingTemperature": 20.0,
+      "startingWeight": 7.04,
+      "targetABV": 0.33,
+      "sugars": [
+        {
+          "name": "Sugar Syrup",
+          "specificGravity": 1.3553,
+          "percentage": 0.50
+        }
+      ]
+    },
+    {
+      "name": "White Caninha",
+      "startingABV": 0.8066,
+      "startingTemperature": 20.0,
+      "startingWeight": 33.62,
+      "targetABV": 0.40,
+      "sugars": [
+        {
+          "name": "Sugar Syrup (Sunsweet)",
+          "specificGravity": 1.3509,
+          "percentage": 0.04
+        }
+      ]
+    },
+    {
+      "name": "Pepito's Lemonade",
+      "startingABV": 0.962,
+      "startingTemperature": 20.0,
+      "startingWeight": 4.06,
+      "targetABV": 0.12,
+      "sugars": [
+        {
+          "name": "Sugar - Sunsweet 70 Brix",
+          "specificGravity": 1.3509,
+          "percentage": 0.1879
+        },
+        {
+          "name": "Lemon Juice",
+          "specificGravity": 1.04,
+          "percentage": 0.246
+        }
+      ]
+    }
+  ]
+} 

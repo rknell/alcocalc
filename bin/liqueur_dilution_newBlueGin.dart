@@ -9,10 +9,12 @@ final sugars = <Sugars>[
 ];
 
 void main() {
-  liqueurDilution(
+  final result = dilution(
       startingWeight: startingWeight,
       startingABV: startingABV,
       startingTemperature: startingTemperature,
       sugars: sugars,
       targetABV: .37);
+
+  print('Liqueur dilution result: $result');
 }

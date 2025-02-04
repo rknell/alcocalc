@@ -14,10 +14,12 @@ final sugars = <Sugars>[
 const double targetABV = .4;
 
 void main() {
-  liqueurDilution(
+  final result = dilution(
       startingWeight: startingWeight,
       startingABV: startingABV,
       startingTemperature: startingTemperature,
       sugars: sugars,
       targetABV: targetABV);
+
+  print('Liqueur dilution result: $result');
 }

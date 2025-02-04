@@ -25,6 +25,6 @@ main() {
   final percentABV = 0.934;
 
   print("""
-  2/9/22	2			NGS			$charge	${(recoveryWeight * 1000).toStringAsFixed(1)}	${recoveryTemp.toStringAsFixed(1)}	${(uncorrectedABV * 100).toStringAsFixed(0)}%	${recoveryABV}	$recoveryLALs
+  2/9/22	2			NGS			$charge	${(recoveryWeight * 1000).toStringAsFixed(1)}	${recoveryTemp.toStringAsFixed(1)}	${(uncorrectedABV * 100).toStringAsFixed(0)}%	$recoveryABV	$recoveryLALs
   """);
 }

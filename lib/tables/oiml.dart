@@ -7,19 +7,14 @@ export '../helpers.dart';
 const alpha = 25E-6;
 
 class OIMLTables {
-  // """
-  //   Table I gives the density of a mixture as a function of the temperature in °C, from — 20 °C to + 40 °C, and of the
-  //   alcoholic strength by mass from the minimum permissible value and 100%, this minimum value corresponding to the
-  //   freezing of the mixture for the temperature considered.
-  //   :param p: alcoholic strength by mass in %
-  //   :type p: float
-  //   :param t: temperature in °C, from — 20 °C to + 40 °C
-  //   :type t: float
-  //   :return: density of a mixture of water and ethanol in kg/m3
-  //   :rtype: float
-  //   """
-  // rho_p_t
-  static double tableI(double p, double t) {
+  /// Returns the density of a water-ethanol mixture based on mass percentage and temperature.
+  ///
+  /// Parameters:
+  /// - [massPercentage]: Alcoholic strength by mass (0.0 to 1.0)
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns density in kg/m³
+  static double tableI(double massPercentage, double tempCelsius) {
     final ak = [
       9.982012300E2,
       -1.929769495E2,
@@ -96,326 +91,280 @@ class OIMLTables {
     double a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0;
 
     for (var k = 0; k < ak.length; k++) {
-      a += ak[k] * (math.pow(p, k));
+      a += ak[k] * (math.pow(massPercentage, k));
     }
 
     for (var k = 0; k < bk.length; k++) {
-      b += bk[k] * math.pow(t - 20, k + 1);
+      b += bk[k] * math.pow(tempCelsius - 20, k + 1);
     }
 
     for (var k = 0; k < c1k.length; k++) {
-      c += c1k[k] * math.pow(p, k + 1) * (math.pow(t - 20, 1));
+      c += c1k[k] *
+          math.pow(massPercentage, k + 1) *
+          (math.pow(tempCelsius - 20, 1));
     }
 
     for (var k = 0; k < c2k.length; k++) {
-      d += c2k[k] * math.pow(p, k + 1) * (math.pow(t - 20, 2));
+      d += c2k[k] *
+          math.pow(massPercentage, k + 1) *
+          (math.pow(tempCelsius - 20, 2));
     }
 
     for (var k = 0; k < c3k.length; k++) {
-      e += c3k[k] * math.pow(p, k + 1) * (math.pow(t - 20, 3));
+      e += c3k[k] *
+          math.pow(massPercentage, k + 1) *
+          (math.pow(tempCelsius - 20, 3));
     }
 
     for (var k = 0; k < c4k.length; k++) {
-      f += c4k[k] * math.pow(p, k + 1) * (math.pow(t - 20, 4));
+      f += c4k[k] *
+          math.pow(massPercentage, k + 1) *
+          (math.pow(tempCelsius - 20, 4));
     }
 
     for (var k = 0; k < c5k.length; k++) {
-      g += c5k[k] * math.pow(p, k + 1) * (math.pow(t - 20, 5));
+      g += c5k[k] *
+          math.pow(massPercentage, k + 1) *
+          (math.pow(tempCelsius - 20, 5));
     }
 
-    final output = a + b + c + d + e + f + g;
-
-    return output;
+    return a + b + c + d + e + f + g;
   }
 
-  // """
-  // Table II gives the density of a mixture as a function of the temperature varying from — 20 °C to + 40 °C
-  // and of the alcoholic strength by volume varying between the minimum permissible value and 100 %.
-  // :param q: alcoholic strength by volume in %
-  // :type q: float
-  // :param t: temperature in °C, from — 20 °C to + 40 °C
-  // :type t: float
-  // :return: density of a mixture of water and ethanol in kg/m3
-  // :rtype: float
-  // """
-  // rho_q_t
-  static double tableII(double abvPercentage, double temperature) {
-    return tableI(tableIVb(abvPercentage), temperature);
+  /// Returns the density of a water-ethanol mixture based on volume percentage and temperature.
+  ///
+  /// Parameters:
+  /// - [volumePercentage]: Alcoholic strength by volume (0.0 to 1.0)
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns density in kg/m³
+  static double tableII(double volumePercentage, double tempCelsius) {
+    return tableI(tableIVb(volumePercentage), tempCelsius);
   }
 
-  // """
-  //   Table IIIa gives the density at 20 °C as a function of the alcoholic strength by mass varying between 0 % and
-  //   100 %.
-  //   :param p: alcoholic strength by mass in %
-  //   :type p: float
-  //   :return: density of a mixture of water and ethanol in kg/m3 at 20 °C
-  //   :rtype: float
-  //   """
-  // rho20_p
-  static double tableIIIa(p) => tableI(p, 20);
+  /// Returns the density at 20°C based on mass percentage.
+  ///
+  /// Parameters:
+  /// - [massPercentage]: Alcoholic strength by mass (0.0 to 1.0)
+  ///
+  /// Returns density in kg/m³ at 20°C
+  static double tableIIIa(double massPercentage) => tableI(massPercentage, 20);
 
-  // """
-  //   Table IVb gives the alcoholic strength by mass as a function of the alcoholic strength by volume varying between
-  //   0 and 100 %.
-  //   :param q: alcoholic strength by volume in %
-  //   :type q: float
-  //   :return: alcoholic strength by mass in %
-  //   :rtype: float
-  //   """
-  // p_q
-  static double tableIVb(double q) {
-    if (q > 1) {
+  /// Converts volume percentage to mass percentage.
+  ///
+  /// Parameters:
+  /// - [volumePercentage]: Alcoholic strength by volume (0.0 to 1.0)
+  ///
+  /// Returns alcoholic strength by mass (0.0 to 1.0)
+  static double tableIVb(double volumePercentage) {
+    if (volumePercentage > 1) {
       throw MustBeDecimalPercentageException();
     }
-    return findRoot((x) => tableIIIb(x) - q, 0, 1, precision: 0.000000000001);
+    return findRoot(
+      (x) => tableIIIb(x) - volumePercentage,
+      0,
+      1,
+      precision: 0.000000000001,
+    );
   }
 
-  // """
-  //   Table IIIb gives the alcoholic strength by volume as a function of the alcoholic strength by mass varying between
-  //   0 % and 100 %.
-  //   :param p: alcoholic strength by mass in %
-  //   :type p: float
-  //   :return: alcoholic strength by volume in %
-  //   :rtype: float
-  //   """
-  // q_p
-  static double tableIIIb(double p) => p * tableI(p, 20) / tableI(1, 20);
+  /// Converts mass percentage to volume percentage.
+  ///
+  /// Parameters:
+  /// - [massPercentage]: Alcoholic strength by mass (0.0 to 1.0)
+  ///
+  /// Returns alcoholic strength by volume (0.0 to 1.0)
+  static double tableIIIb(double massPercentage) =>
+      massPercentage * tableI(massPercentage, 20) / tableI(1, 20);
 
-  // """
-  //   Table IVa gives the density at 20 °C as a function of the alcoholic strength by volume varying between 0 and 100 %.
-  //   :param q: alcoholic strength by volume in %
-  //   :type q: float
-  //   :return: density of a mixture of water and ethanol in kg/m3 at 20 °C
-  //   :rtype: float
-  //   """
-  // rho20_q
-  static double tableIVa(double q) => tableII(q, 20);
+  /// Returns the density at 20°C based on volume percentage.
+  ///
+  /// Parameters:
+  /// - [volumePercentage]: Alcoholic strength by volume (0.0 to 1.0)
+  ///
+  /// Returns density in kg/m³ at 20°C
+  static double tableIVa(double volumePercentage) =>
+      tableII(volumePercentage, 20);
 
-  // # type: (float) -> float
-  // """
-  //   Table Va gives the alcoholic strength by mass as a function of the density at 20 °C varying between 789.3 kg/m3 and
-  //   998.2 kg/m3.
-  //   :param rho20: density of a mixture of water and ethanol in kg/m3 at 20 °C
-  //   :type rho20: float
-  //   :return: alcoholic strength by mass in %
-  //   :rtype: float
-  //   """
-  // p_rho20
-  static double tableVa(double d) {
+  /// Converts density at 20°C to mass percentage.
+  ///
+  /// Parameters:
+  /// - [density20C]: Density of mixture in kg/m³ at 20°C (range: 789.3 to 998.2)
+  ///
+  /// Returns alcoholic strength by mass (0.0 to 1.0)
+  static double tableVa(double density20C) {
     return findRoot(
-      (p) => tableIIIa(p) - d,
+      (massPercentage) => tableIIIa(massPercentage) - density20C,
       0,
       1,
     );
   }
 
-  //     # type: (float, float) -> float
-  //     """
-  //     Table Vb gives the alcoholic strength by volume as a function of the density at 20 °C varying between 789.3 kg/m3
-  //     and 998.2 kg/m3.
-  //     :param rho20: density of a mixture of water and ethanol in kg/m3 at 20 °C
-  //     :type rho20: float
-  //     :return: alcoholic strength by volume in %
-  //     :rtype: float
-  //     """
-  static double tableVb(double density) {
-    return findRoot((p) => tableIVa(p) - density, 0, 1,
-        maxIterations: 50, precision: 0.00001);
+  /// Converts density at 20°C to volume percentage.
+  ///
+  /// Parameters:
+  /// - [density20C]: Density of mixture in kg/m³ at 20°C (range: 789.3 to 998.2)
+  ///
+  /// Returns alcoholic strength by volume (0.0 to 1.0)
+  static double tableVb(double density20C) {
+    return findRoot(
+      (volumePercentage) => tableIVa(volumePercentage) - density20C,
+      0,
+      1,
+      maxIterations: 50,
+      precision: 0.00001,
+    );
   }
 
-  // # type: (float, float) -> float
-  // """
-  //   Table VI gives the value of the alcoholic strength by mass of a mixture as a function of its Celsius temperature t
-  //   and of its density at this temperature.
-  //   :param rho: density of a mixture of water and ethanol in kg/m3
-  //   :type rho: float
-  //   :param t: temperature in °C, from — 20 °C to + 40 °C
-  //   :type t: float
-  //   :return: alcoholic strength by mass in %
-  //   :rtype: float
-  //   """
-  static double tableVI(double density, double temperature) {
+  /// Converts density at given temperature to mass percentage.
+  ///
+  /// Parameters:
+  /// - [density]: Density of mixture in kg/m³
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns alcoholic strength by mass (0.0 to 1.0)
+  static double tableVI(double density, double tempCelsius) {
     return findRoot(
-      (percentage) => tableI(percentage, temperature) - density,
+      (massPercentage) => tableI(massPercentage, tempCelsius) - density,
       0,
       1,
     );
   }
 
-  //     # type: (float, float) -> float
-  //     """
-  //     Table VII gives the alcoholic strength by volume of a mixture as a function of its Celsius temperature t and of its
-  //     density at the same temperature.
-  //     :param rho: density of a mixture of water and ethanol in kg/m3
-  //     :type rho: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: alcoholic strength by volume in %
-  //     :rtype: float
-  //     """
-  static double tableVII(double density, double temperature) {
-    return tableIIIb(tableVI(density, temperature));
+  /// Converts density at given temperature to volume percentage.
+  ///
+  /// Parameters:
+  /// - [density]: Density of mixture in kg/m³
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns alcoholic strength by volume (0.0 to 1.0)
+  static double tableVII(double density, double tempCelsius) {
+    return tableIIIb(tableVI(density, tempCelsius));
   }
 
-  // # type: (float, float) -> float
-  // """
-  // Table VIIIa gives the value of the alcoholic strength by mass of a mixture at the Celsius temperature t from the
-  // reading of an alcohometer made of soda lime glass, graduated in units of alcoholic strength by mass (% mass).
-  // :param p: reading of an alcohometer made of soda lime glass, graduated in units of alcoholic strength by mass
-  // :type p: float
-  // :param t: temperature in °C, from — 20 °C to + 40 °C
-  // :type t: float
-  // :return: alcoholic strength by mass in %
-  // :rtype: float
-  // """
-  static double tableVIIIa(double p, double t) {
-    return tableIXa(tableIIIa(p), t);
+  /// Converts alcohometer mass reading to actual mass percentage at given temperature.
+  ///
+  /// Parameters:
+  /// - [alcohometerMassReading]: Reading from soda lime glass alcohometer (mass %)
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns actual alcoholic strength by mass (0.0 to 1.0)
+  static double tableVIIIa(double alcohometerMassReading, double tempCelsius) {
+    return tableIXa(tableIIIa(alcohometerMassReading), tempCelsius);
   }
 
-  //     # type: (float, float) -> float
-  //     """
-  //     Table VIIIb gives the value of the alcoholic strength by volume of a mixture at the Celsius temperature t from the
-  //     reading of an alcohometer made of soda lime glass, graduated in units of alcoholic strength by volume (% vol).
-  //     :param q: reading of an alcohometer made of soda lime glass, graduated in units of alcoholic strength by volume
-  //     :type q: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: alcoholic strength by volume in %
-  //     :rtype: float
-  //     """
-  static double tableVIIIb(double p, double t) {
-    return tableIXb(tableIVa(p), t);
+  /// Converts alcohometer volume reading to actual volume percentage at given temperature.
+  ///
+  /// Parameters:
+  /// - [alcohometerVolReading]: Reading from soda lime glass alcohometer (volume %)
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns actual alcoholic strength by volume (0.0 to 1.0)
+  static double tableVIIIb(double alcohometerVolReading, double tempCelsius) {
+    return tableIXb(tableIVa(alcohometerVolReading), tempCelsius);
   }
 
-  //      # type: (float, float) -> float
-  //     """
-  //     Table IXa gives the value of the alcoholic strength by mass of a mixture at the Celsius temperature t from the
-  //     reading of a hydrometer for alcohol in soda lime glass.
-  //     :param rho20prime: reading of a hydrometer for alcohol in soda lime glass
-  //     :type rho20prime: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: alcoholic strength by mass in %
-  //     :rtype: float
-  //     """
-  // p_rho20prime_t
-  static double tableIXa(double p, double t) {
-    final rho_t = p * (1 - alpha * (t - 20.0));
-    return tableVI(rho_t, t);
+  /// Converts hydrometer reading to mass percentage at given temperature.
+  ///
+  /// Parameters:
+  /// - [hydrometerReading]: Reading from soda lime glass hydrometer
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns alcoholic strength by mass (0.0 to 1.0)
+  static double tableIXa(double hydrometerReading, double tempCelsius) {
+    final densityAtTemp =
+        hydrometerReading * (1 - alpha * (tempCelsius - 20.0));
+    return tableVI(densityAtTemp, tempCelsius);
   }
 
-  //  """
-  //     Table IXb gives respectively the value of the alcoholic strength by volume of a mixture at the Celsius temperature
-  //     t from the reading of a hydrometer for alcohol in soda lime glass.
-  //     :param rho20prime: reading of a hydrometer for alcohol in soda lime glass
-  //     :type rho20prime: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: alcoholic strength by volume in %
-  //     :rtype: float
-  //     """
-  static double tableIXb(double p, double t) {
-    final rho_t = p * (1 - alpha * (t - 20.0));
-    return tableVII(rho_t, t);
+  /// Converts hydrometer reading to volume percentage at given temperature.
+  ///
+  /// Parameters:
+  /// - [hydrometerReading]: Reading from soda lime glass hydrometer
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns alcoholic strength by volume (0.0 to 1.0)
+  static double tableIXb(double hydrometerReading, double tempCelsius) {
+    final densityAtTemp =
+        hydrometerReading * (1 - alpha * (tempCelsius - 20.0));
+    return tableVII(densityAtTemp, tempCelsius);
   }
 
-  // # type: (float, float) -> float
-  // """
-  //   Tables Xa gives the value of the alcoholic strength by mass of a mixture at the Celsius temperature t from the
-  //   measurement of the density of this mixture by means of an instrument made of borosilicate glass.
-  //   :param rho20prime: measurement of the density of this mixture by means of an instrument made of borosilicate glass
-  //   :type rho20prime: float
-  //   :param t: temperature in °C, from — 20 °C to + 40 °C
-  //   :type t: float
-  //   :return: alcoholic strength by mass in %
-  //   :rtype: float
-  //   """
-  static double tableXa(double p, double t) {
-    final rho_t = p * (1 - alpha * (t - 20.0));
-    return tableVI(rho_t, t);
+  /// Converts borosilicate glass measurement to mass percentage at given temperature.
+  ///
+  /// Parameters:
+  /// - [borosilicateReading]: Density measurement from borosilicate glass instrument
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns alcoholic strength by mass (0.0 to 1.0)
+  static double tableXa(double borosilicateReading, double tempCelsius) {
+    final densityAtTemp =
+        borosilicateReading * (1 - alpha * (tempCelsius - 20.0));
+    return tableVI(densityAtTemp, tempCelsius);
   }
 
-  //# type: (float, float) -> float
-  //     """
-  //     Tables Xb gives respectively the value of the alcoholic strength by volume of a mixture at the Celsius temperature
-  //     t from the measurement of the density of this mixture by means of an instrument made of borosilicate glass.
-  //     :param rho20prime: measurement of the density of this mixture by means of an instrument made of borosilicate glass
-  //     :type rho20prime: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: alcoholic strength by volume in %
-  //     :rtype: float
-  //     """
-  static double tableXb(double p, double t) {
-    final rho_t = p * (1 - alpha * (t - 20.0));
-    return tableVII(rho_t, t);
+  /// Converts borosilicate glass measurement to volume percentage at given temperature.
+  ///
+  /// Parameters:
+  /// - [borosilicateReading]: Density measurement from borosilicate glass instrument
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns alcoholic strength by volume (0.0 to 1.0)
+  static double tableXb(double borosilicateReading, double tempCelsius) {
+    final densityAtTemp =
+        borosilicateReading * (1 - alpha * (tempCelsius - 20.0));
+    return tableVII(densityAtTemp, tempCelsius);
   }
 
-  //# type: (float, float) -> float
-  //     """
-  //     Table XIa gives in dm3 the volume v at 20 °C of pure ethanol contained in 100 dm3 of a mixture of known alcoholic
-  //     strength by mass at the Celsius temperature t, assuming that the volume of 100 dm3 was measured by a container in
-  //     steel calibrated at 20 °C.
-  //     :param p: alcoholic strength by mass in % measured by a container in steel calibrated at 20 °C
-  //     :type p: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: volume v at 20 °C of pure ethanol contained in 100 dm3 of a mixture, in dm3
-  //     :rtype:
-  static double tableXIa(double p, double t) {
+  /// Calculates pure ethanol volume at 20°C in 100dm³ of mixture from mass percentage.
+  ///
+  /// Parameters:
+  /// - [massPercentage]: Alcoholic strength by mass (0.0 to 1.0)
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns volume of pure ethanol in dm³ per 100dm³ of mixture
+  static double tableXIa(double massPercentage, double tempCelsius) {
     const beta = 36E-6;
-    return p * (tableI(p, t) / tableIIIa(1.0)) * (1 + beta * (t - 20.0)) * 100;
-  }
-
-  //# type: (float, float) -> float
-  //     """
-  //     Tables XIb gives in dm3 the volume v at 20 °C of pure ethanol contained in 100 dm3 of a mixture of known alcoholic
-  //     strength by volume at the Celsius temperature t, assuming that the volume of 100 dm3 was measured by a container
-  //     in steel calibrated at 20 °C.
-  //     :param q: alcoholic strength by volume in % measured by a container in steel calibrated at 20 °C
-  //     :type q: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: volume v at 20 °C of pure ethanol contained in 100 dm3 of a mixture, in dm3
-  //     :rtype: float
-  //     """
-  static double tableXIb(double q, double t) {
-    return tableXIa(tableIVb(q), t);
-  }
-
-  //# type: (float, float) -> float
-  //     """
-  //     Table XIIa gives in dm3 the volume v at 20 °C of pure ethanol contained in 100 kg of a mixture of known alcoholic
-  //     strength by mass at the Celsius temperature t. It is assumed that the weighing took place in air whose density was
-  //     1.2 kg/m3, by means of weights characterized by the conventional value of the result of their weighing in air.
-  //     :param p: alcoholic strength by mass in %
-  //     :type p: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: volume v at 20 °C of pure ethanol contained in 100 kg of a mixture, in dm3
-  //     :rtype: float
-  //     """
-  static double tableXIIa(double p, double t) {
-    return p *
-        (1E3 / tableIIIa(1.0)) *
-        (1 - 1.2 * ((1.0 / 8000) - (1 / tableI(p, t)))) *
+    return massPercentage *
+        (tableI(massPercentage, tempCelsius) / tableIIIa(1.0)) *
+        (1 + beta * (tempCelsius - 20.0)) *
         100;
   }
 
-  //  # type: (float, float) -> float
-  //     """
-  //     Table XIIb gives in dm3 the volume v at 20 °C of pure ethanol contained in 100 kg of a mixture of known alcoholic
-  //     strength by volume at the Celsius temperature t. It is assumed that the weighing took place in air whose density
-  //     was 1.2 kg/m3, by means of weights characterized by the conventional value of the result of their weighing in air.
-  //     :param q: alcoholic strength by volume in %
-  //     :type q: float
-  //     :param t: temperature in °C, from — 20 °C to + 40 °C
-  //     :type t: float
-  //     :return: volume v at 20 °C of pure ethanol contained in 100 kg of a mixture, in dm3
-  //     :rtype: float
-  //     """
-  static double tableXIIb(double q, double t) {
-    return tableXIIa(tableIVb(q), t);
+  /// Calculates pure ethanol volume at 20°C in 100dm³ of mixture from volume percentage.
+  ///
+  /// Parameters:
+  /// - [volumePercentage]: Alcoholic strength by volume (0.0 to 1.0)
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns volume of pure ethanol in dm³ per 100dm³ of mixture
+  static double tableXIb(double volumePercentage, double tempCelsius) {
+    return tableXIa(tableIVb(volumePercentage), tempCelsius);
+  }
+
+  /// Calculates pure ethanol volume at 20°C in 100kg of mixture from mass percentage.
+  ///
+  /// Parameters:
+  /// - [massPercentage]: Alcoholic strength by mass (0.0 to 1.0)
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns volume of pure ethanol in dm³ per 100kg of mixture
+  static double tableXIIa(double massPercentage, double tempCelsius) {
+    return massPercentage *
+        (1E3 / tableIIIa(1.0)) *
+        (1 - 1.2 * ((1.0 / 8000) - (1 / tableI(massPercentage, tempCelsius)))) *
+        100;
+  }
+
+  /// Calculates pure ethanol volume at 20°C in 100kg of mixture from volume percentage.
+  ///
+  /// Parameters:
+  /// - [volumePercentage]: Alcoholic strength by volume (0.0 to 1.0)
+  /// - [tempCelsius]: Temperature in °C (range: -20°C to +40°C)
+  ///
+  /// Returns volume of pure ethanol in dm³ per 100kg of mixture
+  static double tableXIIb(double volumePercentage, double tempCelsius) {
+    return tableXIIa(tableIVb(volumePercentage), tempCelsius);
   }
 }
 
