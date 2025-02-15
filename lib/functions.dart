@@ -1,3 +1,4 @@
+import 'tables/brix.dart';
 import 'tables/oiml.dart';
 
 class AlcocalcFunctions {
@@ -44,6 +45,46 @@ class AlcocalcFunctions {
       OIMLTables.tableVIIIb(percentABV, temperature);
 
   double abvToAbw(abv) => OIMLTables.tableIVb(abv);
+
+  /// Calculates the total litres of pure alcohol (LALs) from a given weight, ABV, and temperature
+  /// using OIML tables for accurate conversion.
+  ///
+  /// Parameters:
+  /// - weight: The weight of the liquid in kilograms
+  /// - abv: The alcohol by volume as a decimal (e.g., 0.40 for 40%)
+  /// - temperature: The temperature in Celsius (defaults to 20°C)
+  ///
+  /// Returns the litres of pure alcohol (LALs)
+  double litresOfAlcoholCalculation({
+    required double weight,
+    required double abv,
+    double temperature = 20.0,
+  }) {
+    final correctedABV = OIMLTables.tableVIIIb(abv, temperature);
+    final density = OIMLTables.tableII(abv, temperature) / 1000;
+    final volume = weight / density;
+    return volume * correctedABV;
+  }
+
+  /// Converts specific gravity to degrees Brix (°Bx).
+  ///
+  /// Degrees Brix represents the sugar content of an aqueous solution,
+  /// where one degree Brix equals 1 gram of sucrose in 100 grams of solution.
+  ///
+  /// Parameters:
+  /// - specificGravity: The specific gravity of the solution (ratio to water density)
+  ///
+  /// Returns the sugar content in degrees Brix (°Bx)
+  double densityToBrix(double specificGravity) =>
+      Brix.densityToBrix(specificGravity);
+
+  /// Converts degrees Brix to specific gravity.
+  ///
+  /// Parameters:
+  /// - degreesBrix: The sugar content in degrees Brix (°Bx)
+  ///
+  /// Returns the specific gravity of the solution (ratio to water density)
+  double brixToDensity(double degreesBrix) => Brix.brixToDensity(degreesBrix);
 }
 
 class _DiluteByWeightResult {
@@ -375,10 +416,8 @@ AlcoholAdditionResult calculateAlcoholAddition({
   final finalWeight = currentWeight + requiredAlcoholWeight;
   final finalVolume = currentVolume + additionVolume;
 
-  // Calculate LALs
-  final lals = finalVolume * targetABV;
-
-  print("LALs: \\${lals.toStringAsFixed(3)}");
+  // Calculate LALs for the added alcohol
+  final lals = additionVolume * additionABV;
 
   return AlcoholAdditionResult(
     requiredAlcoholWeight: requiredAlcoholWeight,

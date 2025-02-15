@@ -1,6 +1,6 @@
 import 'package:alcocalc/functions.dart';
 
-main() {
+void main() {
   var result = calculateAlcoholAddition(
       currentWeight: 63.88,
       currentABV: .3626,

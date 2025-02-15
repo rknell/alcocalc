@@ -11,6 +11,7 @@ A Dart library for precise alcohol dilution calculations, specifically designed 
   - Standard dilution (by weight)
   - Dilution to specific volume
   - Dilution to number of bottles
+- Calculate alcohol additions to increase ABV
 - Maintains LALs (Litres of Absolute Alcohol) through calculations
 - Provides acceptable ABV ranges for quality control
 - Brix calculations for sugar content
@@ -23,8 +24,8 @@ Add this to your `pubspec.yaml`:
 dependencies:
   alcocalc:
     git:
-      url: git@bitbucket.org:rebellion-rum/alcocalc.git
-      ref: main
+      url: https://bitbucket.org/rebellion-rum/alcocalc.git
+      ref: main  # or specific version tag
 ```
 
 ## Usage
@@ -32,7 +33,7 @@ dependencies:
 ### Basic Dilution Calculation
 
 ```dart
-import 'package:alcocalc/functions.dart';
+import 'package:alcocalc/alcocalc.dart';
 
 void main() {
   final result = dilution(
@@ -57,16 +58,15 @@ void main() {
 ### Dilution with Sugar Content (Using Brix)
 
 ```dart
-import 'package:alcocalc/functions.dart';
-import 'package:alcocalc/tables/brix.dart';
+import 'package:alcocalc/alcocalc.dart';
 
 void main() {
   // Define sugars using Brix values
   final sugars = <Sugars>[
     Sugars(
       name: 'Sugar Syrup',
-      specificGravity: Brix.brixToDensity(70), // 70° Brix sugar syrup
-      percentage: 0.0064,                      // 0.64% of total volume
+      specificGravity: 1.359,  // Specific gravity for 70° Brix sugar syrup
+      percentage: 0.0064,      // 0.64% of total volume
     ),
   ];
 
@@ -86,26 +86,57 @@ void main() {
 ### Dilution to Specific Volume
 
 ```dart
-final result = diluteToVolume(
-  startingABV: 0.962,
-  startingTemperature: 20.0,
-  sugars: [],
-  targetABV: 0.65,
-  targetVolume: 50.0, // Litres
-);
+import 'package:alcocalc/alcocalc.dart';
+
+void main() {
+  final result = diluteToVolume(
+    startingABV: 0.962,
+    startingTemperature: 20.0,
+    sugars: [],
+    targetABV: 0.65,
+    targetVolume: 50.0, // Litres
+  );
+}
 ```
 
 ### Dilution to Number of Bottles
 
 ```dart
-final result = diluteToBottles(
-  startingABV: 0.962,
-  startingTemperature: 20.0,
-  sugars: [],
-  targetABV: 0.65,
-  targetBottles: 100,
-  bottleSize: 0.7, // 700ml bottles (default)
-);
+import 'package:alcocalc/alcocalc.dart';
+
+void main() {
+  final result = diluteToBottles(
+    startingABV: 0.962,
+    startingTemperature: 20.0,
+    sugars: [],
+    targetABV: 0.65,
+    targetBottles: 100,
+    bottleSize: 0.7, // 700ml bottles (default)
+  );
+}
+```
+
+### Adding High-Proof Alcohol
+
+```dart
+import 'package:alcocalc/alcocalc.dart';
+
+void main() {
+  final result = calculateAlcoholAddition(
+    currentWeight: 100.0,     // kg
+    currentABV: 0.35,         // 35%
+    targetABV: 0.40,          // Target 40%
+    additionABV: 0.962,       // Using 96.2% alcohol
+    temperature: 20.0,        // Celsius
+  );
+  
+  print(result);
+  // Output includes:
+  // - Required high-proof alcohol to add
+  // - Final weight after addition
+  // - Final volume
+  // - LALs added
+}
 ```
 
 ## Important Notes
@@ -115,8 +146,8 @@ final result = diluteToBottles(
 - Weights should be in kilograms
 - Volumes should be in litres
 - The library uses OIML alcohol tables for accurate density calculations
-- Brix values are used for sugar content calculations
 - Sugar percentages are expressed as decimals (e.g., 0.0064 for 0.64%)
+- All calculations include temperature correction for accurate results
 
 ## Testing
 

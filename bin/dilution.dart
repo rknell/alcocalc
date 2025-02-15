@@ -1,10 +1,10 @@
 import 'package:alcocalc/functions.dart';
 import 'package:alcocalc/tables/oiml.dart';
 
-const double startingABV = 0.962;
+const double startingABV = 0.37;
 const double startingTemperature = 20;
-const double startingWeight = 24.72;
-const targetABV = .37;
+const double startingWeight = .7;
+const targetABV = .08;
 
 main() {
   final alcocalc = AlcocalcFunctions();

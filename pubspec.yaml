@@ -5,11 +5,11 @@ publish_to: none
 homepage: https://bitbucket.org/rebellion-rum/alcocalc
 
 environment:
-  sdk: '>=2.13.0 <3.0.0'
+  sdk: '>=3.6.0 <4.0.0'
 
 dependencies:
-  meta: ^1.9.0
+  meta: ^1.11.0
 
 dev_dependencies:
-  test: ^1.24.0
-  lints: ^2.1.0
+  test: ^1.25.0
+  lints: ^3.0.0
