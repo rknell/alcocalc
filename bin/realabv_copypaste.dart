@@ -3,7 +3,7 @@ import 'package:alcocalc/tables/oiml.dart';
 
 const input = '35440.0000	20.0000	0.875961669';
 
-main() {
+void main() {
   final data = input.split('	');
   late double percentABV;
   if (data[2].contains('%')) {
@@ -15,18 +15,17 @@ main() {
   final weight = double.parse(data[0]);
   print('$weight $temperature $percentABV');
 
-  final alcocalc = AlcocalcFunctions();
-  final correctedABV = alcocalc.correctedABV(percentABV, temperature);
-  final abw = alcocalc.abvToAbw(correctedABV);
+  final correctedABV = Alcocalc.correctedABV(percentABV, temperature);
+  final abw = Alcocalc.abvToAbw(correctedABV);
   final density = OIMLTables.tableI(abw, 20) / 1000;
   final volume = weight / density;
   final weightOfAlcohol = weight * abw;
-  final LALs = (weightOfAlcohol / 1000) / .78924;
+  final lals = (weightOfAlcohol / 1000) / .78924;
   print("""
   ABV = $correctedABV
-  LALs = $LALs
+  LALs = $lals
   Volume = $volume
-  
-  $correctedABV	$LALs
+
+  $correctedABV	$lals
   """);
 }

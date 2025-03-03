@@ -1,8 +1,7 @@
 import 'package:alcocalc/tables/oiml.dart';
 import 'package:test/test.dart';
 
-
-main() {
+void main() {
   //   Table I gives the density of a mixture as a function of the temperature in °C, from — 20 °C to + 40 °C, and of the
   //   alcoholic strength by mass from the minimum permissible value and 100%, this minimum value corresponding to the
   //   freezing of the mixture for the temperature considered.

@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group('LiqueurDilution without sugars', () {
     test('should correctly dilute 96.2% ABV to 65% ABV', () {
-      final result = dilution(
+      final result = Alcocalc.dilution(
         startingWeight: 25.0,
         startingABV: 0.962,
         startingTemperature: 20.0,
@@ -24,7 +24,7 @@ void main() {
     });
 
     test('should correctly dilute 74.16% ABV to 37% ABV', () {
-      final result = dilution(
+      final result = Alcocalc.dilution(
         startingWeight: 23.94,
         startingABV: 0.7416,
         startingTemperature: 25.7,
@@ -41,7 +41,7 @@ void main() {
     });
 
     test('toString should format output consistently', () {
-      final result = dilution(
+      final result = Alcocalc.dilution(
         startingWeight: 25.0,
         startingABV: 0.962,
         startingTemperature: 20.0,
@@ -60,9 +60,10 @@ void main() {
       expect(output, contains('Expected bottles: 65.5'));
     });
 
-    test('should maintain LALs (Litres of Absolute Alcohol) through dilution',
+    test(
+        'should maintain LALs (Litres of Absolute Alcohol) through Alcocalc.dilution',
         () {
-      final result = dilution(
+      final result = Alcocalc.dilution(
         startingWeight: 25.0,
         startingABV: 0.962,
         startingTemperature: 20.0,
@@ -84,7 +85,7 @@ void main() {
   group('LiqueurDilutionToVolume without sugars', () {
     test('should calculate correct starting weight for target volume of 50L',
         () {
-      final result = diluteToVolume(
+      final result = Alcocalc.diluteToVolume(
         startingABV: 0.962,
         startingTemperature: 20.0,
         sugars: [],
@@ -105,7 +106,7 @@ void main() {
     });
 
     test('should calculate correct starting weight for 100 bottles', () {
-      final result = diluteToVolume(
+      final result = Alcocalc.diluteToVolume(
         startingABV: 0.962,
         startingTemperature: 20.0,
         sugars: [],
@@ -128,7 +129,7 @@ void main() {
     test(
         'should handle temperature corrections correctly when calculating starting weight',
         () {
-      final result = diluteToVolume(
+      final result = Alcocalc.diluteToVolume(
         startingABV: 0.7416,
         startingTemperature: 25.7,
         sugars: [],
@@ -150,7 +151,7 @@ void main() {
 
     test('should calculate consistent results with liqueurDilution', () {
       // First calculate using liqueurDilutionToVolume
-      final volumeResult = diluteToVolume(
+      final volumeResult = Alcocalc.diluteToVolume(
         startingABV: 0.962,
         startingTemperature: 20.0,
         sugars: [],
@@ -159,7 +160,7 @@ void main() {
       );
 
       // Then use the calculated starting weight with regular liqueurDilution
-      final dilutionResult = dilution(
+      final dilutionResult = Alcocalc.dilution(
         startingWeight: volumeResult.startingWeight,
         startingABV: 0.962,
         startingTemperature: 20.0,
@@ -179,7 +180,7 @@ void main() {
 
   group('LiqueurDilutionToBottles without sugars', () {
     test('should calculate correct starting weight for 100 bottles', () {
-      final result = diluteToBottles(
+      final result = Alcocalc.diluteToBottles(
         startingABV: 0.962,
         startingTemperature: 20.0,
         sugars: [],
@@ -202,7 +203,7 @@ void main() {
     });
 
     test('should handle custom bottle size', () {
-      final result = diluteToBottles(
+      final result = Alcocalc.diluteToBottles(
         startingABV: 0.962,
         startingTemperature: 20.0,
         sugars: [],
@@ -220,7 +221,7 @@ void main() {
 
     test('should calculate consistent results with liqueurDilutionToVolume',
         () {
-      final bottlesResult = diluteToBottles(
+      final bottlesResult = Alcocalc.diluteToBottles(
         startingABV: 0.962,
         startingTemperature: 20.0,
         sugars: [],
@@ -228,7 +229,7 @@ void main() {
         targetBottles: 100,
       );
 
-      final volumeResult = diluteToVolume(
+      final volumeResult = Alcocalc.diluteToVolume(
         startingABV: 0.962,
         startingTemperature: 20.0,
         sugars: [],
@@ -248,7 +249,7 @@ void main() {
     });
 
     test('should handle temperature corrections correctly', () {
-      final result = diluteToBottles(
+      final result = Alcocalc.diluteToBottles(
         startingABV: 0.7416,
         startingTemperature: 25.7,
         sugars: [],

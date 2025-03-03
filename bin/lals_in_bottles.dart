@@ -2,7 +2,7 @@ import 'package:alcocalc/tables/oiml.dart';
 
 const bottles = 30;
 
-main() {
+void main() {
   final litres = 30 * .7;
   const multiplier = .4;
   final lals = litres * multiplier;

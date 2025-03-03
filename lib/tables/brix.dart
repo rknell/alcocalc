@@ -3,10 +3,10 @@ import 'dart:math' as math;
 import 'package:alcocalc/helpers.dart';
 
 /// Coefficients for the polynomial equation used to convert density to Brix
-const C1 = 182.4601;
-const C2 = 775.6821;
-const C3 = 1262.7794;
-const C4 = 669.5622;
+const c1 = 182.4601;
+const c2 = 775.6821;
+const c3 = 1262.7794;
+const c4 = 669.5622;
 
 /// Utility class for converting between density and Brix measurements.
 ///
@@ -21,10 +21,10 @@ class Brix {
   ///
   /// Returns the sugar content in degrees Brix (°Bx)
   static double densityToBrix(double specificGravity) =>
-      (C1 * math.pow(specificGravity, 3)) -
-      (C2 * math.pow(specificGravity, 2)) +
-      (specificGravity * C3) -
-      C4;
+      (c1 * math.pow(specificGravity, 3)) -
+      (c2 * math.pow(specificGravity, 2)) +
+      (specificGravity * c3) -
+      c4;
 
   /// Converts degrees Brix to specific gravity.
   ///

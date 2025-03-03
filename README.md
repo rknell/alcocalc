@@ -28,7 +28,35 @@ dependencies:
       ref: main  # or specific version tag
 ```
 
-## Usage
+## API Overview
+
+### Main Functions
+
+| Function | Description |
+| --- | --- |
+| `dilution` | Core function for alcohol dilution with optional sugar content |
+| `diluteToVolume` | Calculate dilution to reach a specific final volume |
+| `diluteToBottles` | Calculate dilution to produce a specific number of bottles |
+| `calculateAlcoholAddition` | Calculate high-proof alcohol addition to increase ABV |
+
+### Result Classes
+
+| Class | Description |
+| --- | --- |
+| `DilutionResult` | Contains detailed dilution calculations and recommendations |
+| `SugarResult` | Contains sugar-related calculations for liqueurs |
+| `AlcoholAdditionResult` | Results for alcohol addition calculations |
+
+### Utility Methods
+
+The `Alcocalc` class provides various utility methods:
+- `diluteByWeight`: Core dilution calculation
+- `correctedABV`: Temperature correction for ABV
+- `abvToAbw`: Convert ABV to ABW (Alcohol By Weight)
+- `litresOfAlcoholCalculation`: Calculate LALs (Litres of Absolute Alcohol)
+- `densityToBrix`/`brixToDensity`: Convert between density and Brix (sugar content)
+
+## Usage Examples
 
 ### Basic Dilution Calculation
 
@@ -41,7 +69,7 @@ void main() {
     startingABV: 0.962,        // 96.2%
     startingTemperature: 20.0, // Celsius
     sugars: [],                // No sugars for basic dilution
-    targetABV: 0.65,          // 65%
+    targetABV: 0.65,           // 65%
   );
   
   print(result.toString());
@@ -55,18 +83,23 @@ void main() {
 }
 ```
 
-### Dilution with Sugar Content (Using Brix)
+### Dilution with Sugar Content (For Liqueurs)
 
 ```dart
 import 'package:alcocalc/alcocalc.dart';
 
 void main() {
-  // Define sugars using Brix values
+  // Define sugars using specific gravity values
   final sugars = <Sugars>[
     Sugars(
       name: 'Sugar Syrup',
       specificGravity: 1.359,  // Specific gravity for 70° Brix sugar syrup
       percentage: 0.0064,      // 0.64% of total volume
+    ),
+    Sugars(
+      name: 'Distillers Caramel',
+      specificGravity: 1.6,
+      percentage: 0.002,       // 0.2% of total volume
     ),
   ];
 
@@ -96,6 +129,10 @@ void main() {
     targetABV: 0.65,
     targetVolume: 50.0, // Litres
   );
+  
+  // Output includes required starting weight and water addition
+  print("Required starting weight: ${result.startingWeight} kg");
+  print("Required water addition: ${result.waterAddition} kg");
 }
 ```
 
@@ -113,6 +150,10 @@ void main() {
     targetBottles: 100,
     bottleSize: 0.7, // 700ml bottles (default)
   );
+  
+  // Output includes required starting weight and water addition
+  print("Required starting weight: ${result.startingWeight} kg");
+  print("Required water addition: ${result.waterAddition} kg");
 }
 ```
 
@@ -130,13 +171,32 @@ void main() {
     temperature: 20.0,        // Celsius
   );
   
-  print(result);
-  // Output includes:
-  // - Required high-proof alcohol to add
-  // - Final weight after addition
-  // - Final volume
-  // - LALs added
+  print("Required high-proof alcohol: ${result.additionWeight} kg");
+  print("Final weight: ${result.finalWeight} kg");
+  print("Final volume: ${result.finalVolume} L");
+  print("LALs added: ${result.lalsAdded} L");
 }
+```
+
+## Working with Sugar Content
+
+Sugar content is represented using the `Sugars` class:
+
+```dart
+Sugars(
+  name: String,               // Name of the sugar ingredient
+  specificGravity: double,    // Specific gravity of the sugar
+  percentage: double,         // Percentage as decimal (e.g., 0.01 for 1%)
+)
+```
+
+You can convert between Brix and density using utility methods:
+```dart
+// Convert density to Brix
+double brix = Alcocalc.densityToBrix(1.359);  // Returns ~70°Brix
+
+// Convert Brix to density
+double density = Alcocalc.brixToDensity(70.0); // Returns ~1.359
 ```
 
 ## Important Notes
@@ -157,6 +217,18 @@ The library includes comprehensive tests. Run them using:
 dart test
 ```
 
+To run a specific test file:
+
+```bash
+dart test test/brix_test.dart
+```
+
+To run a specific test group or individual test:
+
+```bash
+dart test test/liqueur_dilution_test.dart -n "should correctly dilute"
+```
+
 ## License
 
-Private - All Rights Reserved 
+Private - All Rights Reserved

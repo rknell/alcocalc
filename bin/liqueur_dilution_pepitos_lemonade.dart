@@ -1,11 +1,10 @@
-import 'package:alcocalc/functions.dart';
-import 'package:alcocalc/tables/brix.dart';
+import 'package:alcocalc/alcocalc.dart';
 
 const tare = 0;
 
 const double startingABV = 0.962;
 const double startingTemperature = 20;
-const double startingWeight = 4.06;
+const double startingWeight = 3.92;
 
 final sugars = <Sugars>[
   Sugars(
@@ -16,7 +15,7 @@ final sugars = <Sugars>[
 ];
 
 void main() {
-  final result = dilution(
+  final result = Alcocalc.dilution(
       startingWeight: startingWeight,
       startingABV: startingABV,
       startingTemperature: startingTemperature,

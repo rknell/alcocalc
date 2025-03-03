@@ -1,4 +1,4 @@
-import 'package:alcocalc/functions.dart';
+import 'package:alcocalc/alcocalc.dart';
 
 const tare = 4.6203;
 
@@ -14,7 +14,7 @@ final sugars = <Sugars>[
 const double targetABV = .4;
 
 void main() {
-  final result = dilution(
+  final result = Alcocalc.dilution(
       startingWeight: startingWeight,
       startingABV: startingABV,
       startingTemperature: startingTemperature,

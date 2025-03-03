@@ -1,4 +1,4 @@
-import 'package:alcocalc/functions.dart';
+import 'package:alcocalc/alcocalc.dart';
 
 const double startingABV = 0.4221;
 const double startingTemperature = 20;
@@ -9,7 +9,7 @@ final sugars = <Sugars>[
 ];
 
 void main() {
-  final result = dilution(
+  final result = Alcocalc.dilution(
       startingWeight: startingWeight,
       startingABV: startingABV,
       startingTemperature: startingTemperature,

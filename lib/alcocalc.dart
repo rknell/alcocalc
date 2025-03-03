@@ -8,13 +8,10 @@
 /// * Adding high-proof alcohol to increase ABV
 library alcocalc;
 
-export 'functions.dart'
-    show
-        AlcocalcFunctions,
-        DilutionResult,
-        Sugars,
-        AlcoholAdditionResult,
-        dilution,
-        diluteToVolume,
-        diluteToBottles,
-        calculateAlcoholAddition;
+export 'classes/alcohol_addition_result.dart';
+export 'classes/dilution_result.dart';
+export 'classes/sugar_result.dart';
+export 'classes/sugars.dart';
+export 'functions.dart';
+export 'tables/brix.dart';
+export 'tables/oiml.dart';

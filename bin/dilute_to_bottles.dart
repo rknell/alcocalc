@@ -1,7 +1,7 @@
-import 'package:alcocalc/functions.dart';
+import 'package:alcocalc/alcocalc.dart';
 
 void main(List<String> args) {
-  var result = diluteToBottles(
+  var result = Alcocalc.diluteToBottles(
       startingABV: 0.962,
       startingTemperature: 20,
       sugars: [],

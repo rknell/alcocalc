@@ -1,10 +1,11 @@
-import 'package:alcocalc/functions.dart';
+import 'package:alcocalc/alcocalc.dart';
 
-const double startingWeight = 36.3;
-const startingABV = 0.6713;
+const double startingABV = 0.6497;
+const double startingTemperature = 20;
+const double startingWeight = 43.10;
 
 void main() {
-  final result = dilution(
+  final result = Alcocalc.dilution(
       startingWeight: startingWeight,
       startingABV: startingABV,
       startingTemperature: 20,
