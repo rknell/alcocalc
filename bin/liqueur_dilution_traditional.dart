@@ -1,8 +1,8 @@
 import 'package:alcocalc/alcocalc.dart';
 
-const double startingABV = 0.6752;
+const double startingABV = 0.4877;
 const double startingTemperature = 20;
-const double startingWeight = 41.06;
+const double startingWeight = 58.84;
 
 final sugars = <Sugars>[
   Sugars(name: 'Sugar Syrup', specificGravity: 1.51257, percentage: .01),
