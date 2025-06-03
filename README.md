@@ -24,7 +24,7 @@ Add this to your `pubspec.yaml`:
 dependencies:
   alcocalc:
     git:
-      url: https://bitbucket.org/rebellion-rum/alcocalc.git
+      url: https://github.com/rknell/alcocalc.git
       ref: main  # or specific version tag
 ```
 
@@ -231,4 +231,4 @@ dart test test/liqueur_dilution_test.dart -n "should correctly dilute"
 
 ## License
 
-Private - All Rights Reserved
+Proprietary - All rights reserved. This software may be used as a dependency in other projects but may not be modified or redistributed without explicit permission. See the LICENSE file for details.

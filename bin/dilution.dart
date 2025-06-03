@@ -1,10 +1,10 @@
 import 'package:alcocalc/functions.dart';
 import 'package:alcocalc/tables/oiml.dart';
 
-const double startingABV = 0.962;
+const double startingABV = 0.6869;
 const double startingTemperature = 20;
-const double startingWeight = 27;
-const targetABV = .65;
+const double startingWeight = 1.91;
+const targetABV = .37;
 
 void main() {
   final startingDensity = OIMLTables.tableII(startingABV, startingTemperature);

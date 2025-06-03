@@ -2,13 +2,12 @@ import 'package:alcocalc/alcocalc.dart';
 
 const tare = 0;
 
-const double startingABV = 0.3908;
+const double startingABV = 0.6869;
 const double startingTemperature = 20;
-const double startingWeight = 58.68;
+const double startingWeight = 1.91;
 
 final sugars = <Sugars>[
-  // Sugars(name: 'Distillers caramel', specificGravity: 1.3, percentage: .01),
-  Sugars(name: 'Sugar', specificGravity: 1.3553, percentage: .02),
+  Sugars(name: 'Sunsweet', specificGravity: 1.3553, percentage: .02),
 ];
 
 void main() {
