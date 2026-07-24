@@ -75,7 +75,7 @@ class DilutionResult {
     required this.expectedBottles,
     required this.targetVolume,
     required this.targetFinalWeight,
-  }) : date = DateTime.now();
+  }) : date = DateTime.now().toUtc();
 
   /// Returns a string representation of the dilution calculation results.
   ///
