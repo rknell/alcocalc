@@ -102,6 +102,23 @@ class Alcocalc {
     return volume * correctedABV;
   }
 
+  /// Calculates LALs for packaged liquid when volume is already known.
+  static double packagedLitresOfAlcohol({
+    required double containerSizeLitres,
+    required double abv,
+    required num quantity,
+  }) {
+    if (!containerSizeLitres.isFinite ||
+        !abv.isFinite ||
+        containerSizeLitres <= 0 ||
+        abv <= 0 ||
+        abv > 1 ||
+        quantity <= 0) {
+      return 0;
+    }
+    return containerSizeLitres * abv * quantity.toDouble();
+  }
+
   /// Converts specific gravity to degrees Brix (°Bx).
   ///
   /// Degrees Brix represents the sugar content of an aqueous solution,
