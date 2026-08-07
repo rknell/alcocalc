@@ -12,7 +12,8 @@ class Sugars {
   /// This value is used to calculate volume displacement and other physical properties.
   final double specificGravity;
 
-  /// The percentage of the sugar in decimal form (e.g., 0.05 for 5%).
+  /// The volume fraction of this sugar solution in the finished product,
+  /// expressed as a decimal (e.g., 0.05 for 5% v/v).
   ///
   /// This value must be less than 1.0 as it represents a fraction of the total.
   final double percentage;

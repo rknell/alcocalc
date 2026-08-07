@@ -1,3 +1,4 @@
+import 'package:alcocalc/classes/sugars.dart';
 import 'package:alcocalc/functions.dart';
 import 'package:alcocalc/tables/oiml.dart';
 import 'package:test/test.dart';
@@ -79,6 +80,95 @@ void main() {
       // Compare with final LALs
       expect(result.lals.toStringAsFixed(2),
           equals(startingLALs.toStringAsFixed(2)));
+    });
+  });
+
+  group('LiqueurDilution with sugar solution', () {
+    test('scales syrup from final volume rather than spirit weight', () {
+      const sunsweetDensity = 1.3474138975143433;
+      const sugarSolidsGramsPerLitre = 250.0;
+      final sunsweetBrix = Alcocalc.densityToBrix(sunsweetDensity);
+      final sunsweetVolumeFraction = sugarSolidsGramsPerLitre /
+          (1000 * sunsweetDensity * (sunsweetBrix / 100));
+
+      final result = Alcocalc.dilution(
+        startingWeight: 6.64,
+        startingABV: 0.85,
+        startingTemperature: 20.0,
+        targetABV: 0.30,
+        sugars: [
+          Sugars(
+            name: 'Sunsweet',
+            specificGravity: sunsweetDensity,
+            percentage: sunsweetVolumeFraction,
+          ),
+        ],
+      );
+
+      final sunsweetWeight = result.sugarResults.single.weight;
+      final sunsweetVolume = sunsweetWeight / sunsweetDensity;
+      final sugarSolids = sunsweetWeight * (sunsweetBrix / 100);
+
+      expect(
+        sunsweetVolume,
+        closeTo(result.targetVolume * sunsweetVolumeFraction, 1e-12),
+      );
+      expect(
+        sugarSolids * 1000 / result.targetVolume,
+        closeTo(sugarSolidsGramsPerLitre, 1e-9),
+      );
+    });
+
+    test('22.30 L limoncello requires 7.964 kg of Sunsweet', () {
+      const sunsweetDensity = 1.3474138975143433;
+      const targetVolume = 22.30;
+      final sunsweetBrix = Alcocalc.densityToBrix(sunsweetDensity);
+      final sunsweetVolumeFraction =
+          250.0 / (1000 * sunsweetDensity * (sunsweetBrix / 100));
+
+      final result = Alcocalc.diluteToVolume(
+        startingABV: 0.85,
+        startingTemperature: 20.0,
+        targetABV: 0.30,
+        targetVolume: targetVolume,
+        sugars: [
+          Sugars(
+            name: 'Sunsweet',
+            specificGravity: sunsweetDensity,
+            percentage: sunsweetVolumeFraction,
+          ),
+        ],
+      );
+
+      // diluteToVolume uses a numerical root finder, so allow 0.01 mL.
+      expect(result.targetVolume, closeTo(targetVolume, 1e-5));
+      expect(result.sugarResults.single.weight, closeTo(7.9642868, 1e-5));
+    });
+
+    test('legacy percentage migration preserves the previous syrup weight', () {
+      const targetAbv = 0.37;
+      const oldPercentage = 0.02;
+      const syrupDensity = 1.3474138975143433;
+      final spiritDensity = OIMLTables.tableII(targetAbv, 20) / 1000;
+      final migratedPercentage = oldPercentage * spiritDensity;
+
+      final result = Alcocalc.diluteToVolume(
+        startingABV: 0.85,
+        startingTemperature: 20.0,
+        targetABV: targetAbv,
+        targetVolume: 100,
+        sugars: [
+          Sugars(
+            name: 'Sunsweet',
+            specificGravity: syrupDensity,
+            percentage: migratedPercentage,
+          ),
+        ],
+      );
+
+      final legacyWeight =
+          result.targetVolume * spiritDensity * syrupDensity * oldPercentage;
+      expect(result.sugarResults.single.weight, closeTo(legacyWeight, 1e-9));
     });
   });
 

@@ -102,6 +102,23 @@ class Alcocalc {
     return volume * correctedABV;
   }
 
+  /// Calculates LALs for packaged liquid when volume is already known.
+  static double packagedLitresOfAlcohol({
+    required double containerSizeLitres,
+    required double abv,
+    required num quantity,
+  }) {
+    if (!containerSizeLitres.isFinite ||
+        !abv.isFinite ||
+        containerSizeLitres <= 0 ||
+        abv <= 0 ||
+        abv > 1 ||
+        quantity <= 0) {
+      return 0;
+    }
+    return containerSizeLitres * abv * quantity.toDouble();
+  }
+
   /// Converts specific gravity to degrees Brix (°Bx).
   ///
   /// Degrees Brix represents the sugar content of an aqueous solution,
@@ -138,8 +155,12 @@ class Alcocalc {
     );
 
     for (var sugar in sugars) {
-      sugar.weight =
-          result.targetWeight * sugar.specificGravity * sugar.percentage;
+      // Recipe percentages are volume fractions of the finished product.
+      // Convert that syrup volume to weight using its specific gravity.
+      // Applying the fraction to targetWeight mixes volume and mass units and
+      // under-doses syrup whenever the target spirit density is below 1 kg/L.
+      final sugarVolume = result.targetVolume * sugar.percentage;
+      sugar.weight = sugarVolume * sugar.specificGravity;
     }
 
     final equivalentWaterWeightUsed = sugars.fold<double>(
