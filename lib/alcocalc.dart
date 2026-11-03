@@ -9,6 +9,7 @@
 library alcocalc;
 
 export 'classes/alcohol_addition_result.dart';
+export 'classes/barrel_blend.dart';
 export 'classes/dilution_result.dart';
 export 'classes/sugar_result.dart';
 export 'classes/sugars.dart';
