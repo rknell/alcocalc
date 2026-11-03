@@ -36,6 +36,20 @@ void main() {
     expect(result.spiritLitres, closeTo(0, 1e-8));
     expect(result.waterKg, closeTo(0, 1e-8));
   });
+  test('60 kg weight-only blend conserves input and added mass', () {
+    final result = BarrelBlend.calculate(additions: [
+      BlendAddition.kilograms(weightKg: 20, abv: .85),
+      BlendAddition.kilograms(weightKg: 12, abv: .962),
+    ], targetAmount: 60);
+    expect(32 + result.spiritKg + result.waterKg, closeTo(60, 1e-8));
+    expect(result.finalLals / result.finalLitres, closeTo(.65, 1e-8));
+    expect(result.spiritKg, greaterThan(0));
+    expect(result.waterKg, greaterThan(0));
+    for (final invalid in [double.nan, double.infinity, -1.0]) {
+      expect(() => BlendAddition.kilograms(weightKg: invalid, abv: .8),
+          throwsArgumentError);
+    }
+  });
   test('rejects impossible targets and invalid numeric inputs', () {
     for (final value in [double.nan, double.infinity, -1.0, 0.0]) {
       expect(
